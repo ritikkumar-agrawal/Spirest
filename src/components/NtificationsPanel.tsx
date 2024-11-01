@@ -1,8 +1,8 @@
 import React from 'react';
 import { Bell, Circle } from 'lucide-react';
 
-const NotificationsPanel: React.FC = () => {
-  // This will be replaced with real notifications data later
+const NotificationsPanel: React.FC<{ isMobile?: boolean }> = ({ isMobile = false }) => {
+  // hard coded notifications for demo purposes to be fetched from an API later on
   const dummyNotifications = [
     {
       id: 1,
@@ -27,8 +27,12 @@ const NotificationsPanel: React.FC = () => {
     }
   ];
 
+  const baseClasses = "bg-gray-800 ring-1 ring-black ring-opacity-5 overflow-hidden";
+  const mobileClasses = "w-full";
+  const desktopClasses = "absolute right-0 mt-2 w-96 rounded-lg shadow-lg";
+
   return (
-    <div className="absolute right-0 mt-2 w-96 rounded-lg shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 overflow-hidden">
+    <div className={`${baseClasses} ${isMobile ? mobileClasses : desktopClasses}`}>
       <div className="p-4 border-b border-gray-700">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-white">Updates</h3>
@@ -41,6 +45,7 @@ const NotificationsPanel: React.FC = () => {
           <div
             key={notification.id}
             className={`p-4 border-b border-gray-700 hover:bg-gray-700/50 transition-colors ${
+              // conditional background color based on read status [Important, Code to be implemented]
               !notification.isRead ? 'bg-gray-700/20' : ''
             }`}
           >
@@ -49,6 +54,7 @@ const NotificationsPanel: React.FC = () => {
                 <Circle className="w-2 h-2 mt-2 text-red-500 fill-current" />
               )}
               <div className="flex-1">
+                {/* has to make the time of post dynamic */}
                 <h4 className="text-sm font-medium text-white">{notification.title}</h4>
                 <p className="text-sm text-gray-400 mt-1">{notification.message}</p>
                 <span className="text-xs text-gray-500 mt-2 block">{notification.time}</span>
@@ -60,6 +66,7 @@ const NotificationsPanel: React.FC = () => {
       
       <div className="p-4 border-t border-gray-700 bg-gray-800/95">
         <button className="w-full px-4 py-2 text-sm text-gray-300 hover:text-white transition-colors">
+          {/* // code to be implemented later to view all updates  */}
           View all updates
         </button>
       </div>

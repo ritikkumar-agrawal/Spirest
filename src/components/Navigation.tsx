@@ -10,13 +10,19 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isMobileNotificationsOpen, setIsMobileNotificationsOpen] = useState(false);
   
   const notificationsRef = useRef<HTMLDivElement>(null);
+  const mobileNotificationsRef = useRef<HTMLDivElement>(null);
 
+  // Handles the click event on the document to close the notifications panel when clicked outside of it.
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
         setIsNotificationsOpen(false);
+      }
+      if (mobileNotificationsRef.current && !mobileNotificationsRef.current.contains(event.target as Node)) {
+        setIsMobileNotificationsOpen(false);
       }
     };
 
@@ -29,6 +35,7 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
+            {/* logo  */}
             <User className="w-8 h-8 text-red-500" />
             <span className="ml-2 text-xl font-semibold text-white">Dashboard</span>
           </div>
@@ -44,6 +51,7 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
             <a href="#" className="text-gray-300 hover:text-white transition-colors">
               Resources & Blogs
             </a>
+            {/* Notifications Button Codes */}
             <div className="relative" ref={notificationsRef}>
               <button
                 onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
@@ -51,19 +59,21 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
               >
                 <span className="relative">
                   Updates
-                  <span className="absolute -top-1 -right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                  {/* code for the red dot */}
+                  {/* <span className="absolute -top-1 -right-2 w-2 h-2 bg-red-500 rounded-full"></span> */}
                 </span>
               </button>
               {isNotificationsOpen && <NotificationsPanel />}
             </div>
             
-            {/* Dropdown Menu */}
+            {/* Dropdown Menu (More options dropdown) */}
             <div className="relative">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="flex items-center text-gray-300 hover:text-white transition-colors focus:outline-none"
               >
                 More
+                {/*  code for the dropdown arrow */}
                 <ChevronDown className={`ml-1 w-4 h-4 transform transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               
@@ -75,7 +85,7 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
                       className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
                       role="menuitem"
                     >
-                      Build Resume
+                      Resume Builder
                     </a>
                     <a
                       href="#"
@@ -89,7 +99,7 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
                       className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
                       role="menuitem"
                     >
-                      More features
+                      Some more fetures here
                     </a>
                   </div>
                 </div>
@@ -97,8 +107,8 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
             </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          {/* Mobile Menu Button ( for phone-view ) */}
+          <div className="md:hidden flex items-center space-x-4">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-gray-300 hover:text-white focus:outline-none"
@@ -118,14 +128,32 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* The Menu Button for Phone-view */}
         {isMobileMenuOpen && (
           <div className="md:hidden absolute w-full left-0 bg-gray-900/95 backdrop-blur-sm">
             <div className="px-2 pt-2 pb-3 space-y-1">
               <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Home</a>
               <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Opportunities</a>
               <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Resources & Blogs</a>
-              <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Updates</a>
+              
+              {/* Code for Mobile Notifications */}
+              <div ref={mobileNotificationsRef} className="relative">
+                <button
+                  onClick={() => setIsMobileNotificationsOpen(!isMobileNotificationsOpen)}
+                  className="flex items-center w-full px-3 py-2 text-gray-300 hover:text-white"
+                >
+                  <span className="relative">
+                    Updates
+                    <span className="absolute -top-1 -right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                  </span>
+                </button>
+                {isMobileNotificationsOpen && (
+                  <div className="relative mx-3 mt-2 rounded-lg shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 overflow-hidden">
+                    <NotificationsPanel isMobile={true} />
+                  </div>
+                )}
+              </div>
+
               <div className="border-t border-gray-700 mt-2 pt-2">
                 <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Resume</a>
                 <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Build</a>
