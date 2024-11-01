@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { LogOut, User, ChevronDown, Bell } from 'lucide-react';
-import NotificationsPanel from './NtificationsPanel';
+import NotificationsPanel from './NotificationsPanel';
 
 interface NavigationProps {
   onLogout: () => void;
