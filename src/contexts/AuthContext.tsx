@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { isAllowedDomain } from '../utils/validation';
 
 interface User {
   email: string;
-  // Add more user fields as needed when DB integration is done
+  // To add more user fields as needed when DB integration is done
 }
 
 interface AuthContextType {
@@ -22,13 +23,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
+      const parsedUser = JSON.parse(storedUser);
+      // Verify domain on reload
+      if (isAllowedDomain(parsedUser.email)) {
+        setUser(parsedUser);
+        setIsAuthenticated(true);
+      } else {
+        // Clear invalid session
+        localStorage.removeItem('user');
+      }
     }
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
+      if (!isAllowedDomain(email)) {
+        throw new Error('Invalid email domain');
+      }
+      
       // TODO: Replace with actual DB authentication
       // Simulate authentication for now
       const userData = { email };

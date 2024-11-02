@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
+import { isAllowedDomain } from '../utils/validation';
 
 interface AuthFormProps {
   type: 'login' | 'signup';
@@ -9,14 +10,22 @@ interface AuthFormProps {
 const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    if (!isAllowedDomain(email)) {
+      setError('Access restricted. Please use an authorized email domain.');
+      return;
+    }
+
     try {
       await onSubmit(email, password);
     } catch (error) {
       console.error('Form submission failed:', error);
-      // Handle error (show message to user, etc.)
+      setError('Authentication failed. Please try again.');
     }
   };
 
@@ -29,7 +38,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {
         <input
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError(null);
+          }}
           className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
           placeholder="Email address"
           required
@@ -43,12 +55,21 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {
         <input
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError(null);
+          }}
           className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
           placeholder="Password"
           required
         />
       </div>
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
+          <p className="text-sm text-red-500">{error}</p>
+        </div>
+      )}
 
       <button
         type="submit"
@@ -58,10 +79,19 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {
       </button>
 
       {type === 'login' && (
-        <div className="text-center">
-          <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">
+        <div className="text-center space-y-2">
+          <a href="#" className="block text-sm text-gray-400 hover:text-white transition-colors">
             Forgot password?
           </a>
+          <div className="text-sm text-gray-400">
+            Don't have an account?{' '}
+            <a 
+              href="mailto:xyz@gmail.com?subject=New Account Request&body=I would like to request a new account."
+              className="text-red-500 hover:text-red-400 transition-colors"
+            >
+              Contact Administrator
+            </a>
+          </div>
         </div>
       )}
     </form>
