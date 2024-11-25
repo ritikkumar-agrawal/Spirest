@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { LogOut, User, ChevronDown, Bell, Settings, UserCircle } from 'lucide-react';
 import NotificationsPanel from './NotificationsPanel';
+import { Link } from 'react-router-dom';
 
 interface NavigationProps {
   onLogout: () => void;
@@ -16,6 +17,7 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
   const notificationsRef = useRef<HTMLDivElement>(null);
   const mobileNotificationsRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
+  // const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -28,6 +30,9 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
       if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
         setIsProfileOpen(false);
       }
+      // if (moreRef.current && !moreRef.current.contains(event.target as Node)) {
+      //   setIsDropdownOpen(false);
+      // }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -45,15 +50,26 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
 
           {/* Navigation Links - Center */}
           <div className="hidden md:flex flex-1 justify-center items-center space-x-8">
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">
+            <Link
+              to="/"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Home
-            </a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">
+            </Link>
+            <Link
+              to="/jobs"
+              // target='_blank'
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Opportunities
-            </a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">
+            </Link>
+            <Link 
+              to="/posts-blogs" 
+              // target="_blank"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Resources & Blogs
-            </a>
+            </Link>
             <div className="relative" ref={notificationsRef}>
               <button
                 onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
@@ -70,6 +86,7 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
             <div className="relative">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                // onClick={() => setIsProfileOpen(!isProfileOpen)}
                 className="flex items-center text-gray-300 hover:text-white transition-colors focus:outline-none"
               >
                 More
@@ -79,13 +96,13 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5">
                   <div className="py-1" role="menu">
-                    <a
-                      href="#"
+                    <Link
+                      to={"/resume"}
                       className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
                       role="menuitem"
                     >
                       Resume
-                    </a>
+                    </Link>
                     <a
                       href="#"
                       className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
