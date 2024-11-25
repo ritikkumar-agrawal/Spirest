@@ -15,7 +15,7 @@ const AuthenticatedApp: React.FC = () => {
     }
   };
   const time = new Date().getHours();
-  const text = time < 12 ? "Good morning!" : time < 18 ? "Good afternoon!" : time < 21 ? "Good evening!" : "Hello!";
+  const text = time < 12 ? "Good morning!" : time < 18 ? "Good afternoon!" : time < 23 ? "Good evening!" : "Hello!";
   if (isAuthenticated) {
     return <Dashboard onLogout={logout} />;
   }

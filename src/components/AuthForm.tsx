@@ -43,7 +43,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {
             setError(null);
           }}
           className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          placeholder="Email address"
+          placeholder="Work email / CDC gmail"
           required
         />
       </div>
@@ -65,6 +65,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {
         />
       </div>
 
+          {/* if error comes, thn show error message */}
       {error && (
         <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
           <p className="text-sm text-red-500">{error}</p>
