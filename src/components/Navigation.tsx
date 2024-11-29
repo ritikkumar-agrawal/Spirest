@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { LogOut, User, ChevronDown, Bell, Settings, UserCircle } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import NotificationsPanel from './notofications/NotificationsPanel';
-import { Link } from 'react-router-dom';
 
 interface NavigationProps {
   onLogout: () => void;
 }
 
 const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -17,7 +18,6 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
   const notificationsRef = useRef<HTMLDivElement>(null);
   const mobileNotificationsRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
-  // const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,42 +30,37 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
       if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
         setIsProfileOpen(false);
       }
-      // if (moreRef.current && !moreRef.current.contains(event.target as Node)) {
-      //   setIsDropdownOpen(false);
-      // }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleProfileClick = () => {
+    navigate('/profile');
+    setIsProfileOpen(false);
+  };
+
   return (
     <nav className="bg-gray-900/50 backdrop-blur-sm border-b border-gray-800 relative z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16">
           {/* Logo - Left */}
-          <div className="flex-shrink-0">
+          <Link to="/" className="flex-shrink-0">
             <User className="w-8 h-8 text-red-500" />
-          </div>
+          </Link>
 
           {/* Navigation Links - Center */}
           <div className="hidden md:flex flex-1 justify-center items-center space-x-8">
-            <Link
-              to="/"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
+            <Link to="/" className="text-gray-300 hover:text-white transition-colors">
               Home
             </Link>
-            <Link
-              to="/jobs"
-              // target='_blank'
-              className="text-gray-300 hover:text-white transition-colors"
-            >
+            <a href="#" className="text-gray-300 hover:text-white transition-colors">
               Opportunities
-            </Link>
+            </a>
             <Link 
               to="/posts-blogs" 
-              // target="_blank"
+              target="_blank"
               className="text-gray-300 hover:text-white transition-colors"
             >
               Resources & Blogs
@@ -86,7 +81,6 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
             <div className="relative">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                // onClick={() => setIsProfileOpen(!isProfileOpen)}
                 className="flex items-center text-gray-300 hover:text-white transition-colors focus:outline-none"
               >
                 More
@@ -97,7 +91,8 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
                 <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5">
                   <div className="py-1" role="menu">
                     <Link
-                      to={"/resume"}
+                      to="/resume"
+                      target="_blank"
                       className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
                       role="menuitem"
                     >
@@ -135,13 +130,13 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
               
               {isProfileOpen && (
                 <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 py-1">
-                  <a
-                    href="#"
-                    className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
+                  <button
+                    onClick={handleProfileClick}
+                    className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
                     <User className="w-4 h-4 mr-3" />
                     Profile
-                  </a>
+                  </button>
                   <a
                     href="#"
                     className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
@@ -178,9 +173,15 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
         {isMobileMenuOpen && (
           <div className="md:hidden absolute w-full left-0 bg-gray-900/95 backdrop-blur-sm">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Home</a>
+              <Link to="/" className="block px-3 py-2 text-gray-300 hover:text-white">Home</Link>
               <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Opportunities</a>
-              <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Resources & Blogs</a>
+              <Link 
+                to="/posts-blogs" 
+                target="_blank"
+                className="block px-3 py-2 text-gray-300 hover:text-white"
+              >
+                Resources & Blogs
+              </Link>
               
               {/* Mobile Notifications */}
               <div ref={mobileNotificationsRef} className="relative">
@@ -200,17 +201,26 @@ const Navigation: React.FC<NavigationProps> = ({ onLogout }) => {
               </div>
 
               <div className="border-t border-gray-700 mt-2 pt-2">
-                <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Resume</a>
+                <Link
+                  to="/resume"
+                  target="_blank"
+                  className="block px-3 py-2 text-gray-300 hover:text-white"
+                >
+                  Resume
+                </Link>
                 <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Build</a>
                 <a href="#" className="block px-3 py-2 text-gray-300 hover:text-white">Interviews</a>
               </div>
 
               {/* Mobile Profile Options */}
               <div className="border-t border-gray-700 mt-2 pt-2">
-                <a href="#" className="flex items-center px-3 py-2 text-gray-300 hover:text-white">
+                <button
+                  onClick={handleProfileClick}
+                  className="flex items-center w-full px-3 py-2 text-gray-300 hover:text-white"
+                >
                   <User className="w-4 h-4 mr-3" />
                   Profile
-                </a>
+                </button>
                 <a href="#" className="flex items-center px-3 py-2 text-gray-300 hover:text-white">
                   <Settings className="w-4 h-4 mr-3" />
                   Change Password

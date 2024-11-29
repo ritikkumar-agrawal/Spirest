@@ -84,7 +84,7 @@ const ResumeEditor: React.FC = () => {
         </div>
 
         <SplitPane
-          split="vertical"
+          split="horizontal"
           sizes={sizes}
           onChange={setSizes}
           sashRender={() => (
