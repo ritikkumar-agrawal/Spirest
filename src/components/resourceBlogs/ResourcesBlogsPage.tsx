@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Heart, MessageCircle, Share2, Bookmark, Link as LinkIcon } from 'lucide-react';
-import Navigation from './Navigation';
+import Navigation from '../Navigation';
 
 type Tab = 'posts' | 'resources' | 'FAQs';
 type ResourceTab = 'software' | 'analytics' | 'embedded';

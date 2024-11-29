@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import AuthenticatedApp from './components/AuthenticatedApp';
-import ResourcesBlogsPage from './components/ResourcesBlogsPage';
+import AuthenticatedApp from './components/auth/AuthenticatedApp';
+import ResourcesBlogsPage from './components/resourceBlogs/ResourcesBlogsPage';
 import ResumeEditor from './components/ResumeEditor';
 
 function App() {

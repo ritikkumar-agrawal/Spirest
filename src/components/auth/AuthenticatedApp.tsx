@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import AuthForm from './AuthForm';
-import Dashboard from './Dashboard';
+import Dashboard from '../dashboard/Dashboard';
 
 const AuthenticatedApp: React.FC = () => {
   const { isAuthenticated, login, logout } = useAuth();

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
-import { isAllowedDomain } from '../utils/validation';
+import { isAllowedDomain } from '../../utils/validation';
 
 interface AuthFormProps {
   type: 'login' | 'signup';

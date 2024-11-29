@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { LogOut, User, ChevronDown, Bell, Settings, UserCircle } from 'lucide-react';
-import NotificationsPanel from './NotificationsPanel';
+import NotificationsPanel from './notofications/NotificationsPanel';
 import { Link } from 'react-router-dom';
 
 interface NavigationProps {
